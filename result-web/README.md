@@ -1,6 +1,6 @@
 # Result-Web
 
-This project is the web application working on Django framework. The project is display the result from [ML2_face_emoji_recognition](https://gitlab.com/imla/demos/ml2_face_emotion_result/tree/jack-2019/ml2_face_emoji_recognition) as a line graph. User also can record the graph on this website.
+This project is the web application working on Django framework. The project is display the result from [ML2_face_emoji_recognition](https://github.com/dacharat/face_emotion_result/tree/master/face_emoji_recognition) as a line graph. User also can record the graph on this website.
 
 ## Project setup
 1. Install [Docker](https://docs.docker.com/install/) and [Docker Compose](https://docs.docker.com/compose/install/).

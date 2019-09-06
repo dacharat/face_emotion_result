@@ -1,6 +1,6 @@
 # ML² Face Emoji Recognition
 
-This project is a project developed from [ML² Face Emoji Swap](https://gitlab.com/imla/demos/ml2_face_emotion_swap). The project use to prediction the face which detected working with [result-web](https://gitlab.com/imla/demos/ml2_face_emotion_result/tree/jack-2019/result-web) project.
+This project is a project developed from [ML² Face Emoji Swap](https://gitlab.com/imla/demos/ml2_face_emotion_swap). The project use to prediction the face which detected working with [result-web](https://github.com/dacharat/face_emotion_result/tree/master/result-web) project.
 
 ## Note
 There are 2 functions to running in different devices.
