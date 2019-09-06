@@ -1,0 +1,42 @@
+{% load static %}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<link rel="stylesheet" type="text/css" href="{% static 'css/detail.css' %}">
+
+<a href='/' >Home</a>
+
+<div class="container">
+    <div class='row'>
+      <h1 id='face-name' class='face-name' contenteditable="false">{{ person.face }}</h1>
+      <button onclick='editText()' id='edit-button' class='btn btn-secondary'>
+        Edit
+      </button>
+    </div>
+    <div class='submit-button' id='submit-button' >
+      <button onclick='submit()' class='btn btn-success'>
+        Submit
+      </button>
+      <button onclick='cancel()' class='btn btn-danger'>
+        Cancel
+      </button>
+    </div>
+    <div>
+      <img src="data:image/png;base64,{{ img_str }}" alt="Cannot load image" ><br>
+      <div> 
+        <h1>Record</h1>
+        {% for r in record %}
+          <a href='/record/{{person.face}}/{{r}}' >{{r}}</a>
+        {% endfor %}
+       </div>
+    </div>
+  <hr>
+  <div class='row'>
+    <p class='m-auto' id="text">Switch the Toggle to starting record</p>
+    <label class="switch m-auto">
+      <input id="toggle" onclick="toggleSwitch()" type="checkbox">
+      <span class="slider round"></span>
+    </label>
+  </div>
+  {% include "graph/graph.html" with colors=color %}
+</div>
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+<script src="{% static 'js/detail.js' %}" ></script>

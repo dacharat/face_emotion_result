@@ -1,0 +1,47 @@
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/graph.css' %}">
+<input class='time-filter' type="text" name="datetimes" />
+<canvas id="myChart" width="600" height="300"></canvas>
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<!-- Latest compiled and minified JavaScript -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js'></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
+<script src="{% static 'js/record_graph.js' %}" ></script>
+<script>
+  let myChart
+  let defaultData = {{data}}
+  let labels = {{labels|safe}}
+  let colors = {{color|safe}}
+  let emotions = {{emotions|safe}}
+  let startTime = labels[0]
+  let endTime = labels[labels.length-1]
+  range = rangeOfDate()
+  setChart(labels, defaultData, range)
+</script>
+
+<script>
+$('input[name="datetimes"]').daterangepicker({
+  timePicker: true,
+  startDate: moment(startTime),
+  endDate: moment(endTime),
+  minDate: moment(startTime),
+  maxDate: moment(endTime),
+  timePicker24Hour: true,
+  timePickerSeconds: true,
+  locale: {
+    format: 'M/DD HH:mm:ss'
+  }
+});
+$('input[name="datetimes"]').on('apply.daterangepicker', function(ev, picker) {
+  startTime = picker.startDate.format('YYYY-MM-DD HH:mm:ss')
+  endTime = picker.endDate.format('YYYY-MM-DD HH:mm:ss')
+  range = rangeOfDate()
+  updateChart(labels, defaultData, range)
+});
+</script>

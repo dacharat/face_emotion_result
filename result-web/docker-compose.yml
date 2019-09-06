@@ -1,0 +1,23 @@
+version: "3"
+services:
+  db:
+    image: "postgres:11"
+    container_name: "my_postgres"
+    ports:
+      - "54320:5432"
+    volumes:
+      - ~/dev/py3_keras/ml2_face_emotion_result/result-web/data:/var/lib/postgresql/data
+  web:
+    build: .
+    # image: "dacharat/result_web:1"
+    restart: always
+    container_name: "django_web"
+    volumes:
+      - .:/code
+    ports:
+      - "3000:3000"
+    command: bash -c 'while !</dev/tcp/db/5432; do sleep 1; done; python manage.py runserver 0.0.0.0:3000'
+    depends_on:
+      - db
+volumes:
+  my_dbdata:

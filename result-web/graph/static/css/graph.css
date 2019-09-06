@@ -1,0 +1,9 @@
+.time-filter {
+    width: 50%;
+    text-align: center;
+}
+.graph-box {
+    position: relative; 
+    height:40vh; 
+    width:80vw;
+}

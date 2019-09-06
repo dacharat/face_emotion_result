@@ -1,0 +1,79 @@
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/graph.css' %}">
+<canvas id="myChart" width="800" height="300"></canvas>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js'></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+
+<script src="{% static 'js/graph.js' %}" ></script>
+<script>
+  let myChart
+  let colors = {{color|safe}}
+  let emotions = ['angry', 'disgusted', 'fearful', 'happy', 'sad', 'surprised', 'neutral']
+  let startLocalDataIndex
+  let currentBoolean = 'false'
+  let previousBoolean = 'false'
+  setChart()
+</script>
+
+<script>
+$.ajax({
+    type: "get",
+    url: "http://localhost:3000/face/new/",
+    data: {
+      query: 'get_graph_local_data'
+    },
+    success: data => {
+      startLocalDataIndex = data.local_graph_data.length - 1
+    }
+  });
+
+setInterval(function() {
+  $.ajax({
+    type: "get",
+    url: "http://localhost:3000/face/new/",
+    data: {
+      query: 'get_graph_local_data'
+    },
+    success: data => {
+      previousBoolean = currentBoolean
+      currentBoolean = data.isRecord
+      local_graph_data = data.local_graph_data.length
+      let face_name = window.location.pathname.split('/')[1]
+      data = data.local_graph_data.slice(startLocalDataIndex)
+      if(previousBoolean === 'false' && currentBoolean === 'true') {
+        startLocalDataIndex = local_graph_data - 1
+        console.log(startLocalDataIndex)
+      }
+      let xais_labels = []
+      let angry = []
+      let disgusted = []
+      let fearful = []
+      let happy = []
+      let sad = []
+      let surprised = []
+      let neutral = []
+      let correctFaceData = []
+      for(let i = 0; i < data.length; i++) {
+        if(data[i].face === face_name) {
+          xais_labels = [...xais_labels, data[i].emotion_detail[0].timestamp]
+          angry = [...angry, data[i].emotion_detail[0].emotion[0]]
+          disgusted = [...disgusted, data[i].emotion_detail[0].emotion[1]]
+          fearful = [...fearful, data[i].emotion_detail[0].emotion[2]]
+          happy = [...happy, data[i].emotion_detail[0].emotion[3]]
+          sad = [...sad, data[i].emotion_detail[0].emotion[4]]
+          surprised = [...surprised, data[i].emotion_detail[0].emotion[5]]
+          neutral = [...neutral, data[i].emotion_detail[0].emotion[6]]
+          correctFaceData = [...correctFaceData, data[i].emotion_detail[0]]
+        }
+      }
+      realtimeUpdate(xais_labels, [angry, disgusted, fearful, happy, sad, surprised, neutral])
+      if(previousBoolean === 'true' && currentBoolean === 'false') {
+        recordingEmotionData(correctFaceData, face_name)
+      }
+    }
+  });
+}, 2000);
+</script>

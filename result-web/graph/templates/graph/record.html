@@ -1,0 +1,56 @@
+{% load static %}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<link rel="stylesheet" type="text/css" href="{% static 'css/detail.css' %}">
+
+<a href='/' >Home</a>
+
+<div class="container">
+    <div class='row'>
+      <h1 id='face-name' class='face-name' contenteditable="false">{{ person.face }}</h1>
+    </div>
+    <div>
+      <img src="data:image/png;base64,{{ img_str }}" alt="Cannot load image" ><br>
+    </div>
+  <hr>
+  <div class="row">
+    <div class="col-md-2 mb-3">
+        <ul class="nav nav-pills flex-column" id="myTab" role="tablist">
+          {% for e in emotion %}
+          {% if e == path %}
+            <li class="nav-item">
+              {% if e == 'summary' %}
+                <a class="nav-link active" id="{{e}}-tab" data-toggle="tab" href="/record/{{person.face}}/{{record}}" role="tab" aria-controls="{{e}}" aria-selected="true">{{e}}</a>
+              {% else %}
+                <a class="nav-link active" id="{{e}}-tab" data-toggle="tab" href="/record/{{person.face}}/{{record}}/{{e}}" role="tab" aria-controls="{{e}}" aria-selected="true">{{e}}</a>
+              {% endif %}
+            </li>
+          {% elif e == 'summary' %}
+            <li class="nav-item">
+              <a class="nav-link" id="{{e}}-tab" data-toggle="tab" href="/record/{{person.face}}/{{record}}" role="tab" aria-controls="{{e}}" aria-selected="true">{{e}}</a>
+            </li>
+          {% else %}
+            <li class="nav-item">
+              <a class="nav-link" id="{{e}}-tab" data-toggle="tab" href="/record/{{person.face}}/{{record}}/{{e}}" role="tab" aria-controls="{{e}}" aria-selected="true">{{ e }}</a>
+            </li>
+          {% endif %}
+          {% endfor %}
+        </ul>
+    </div>
+    <div class="col-md-10">
+      <div class="tab-content" id="myTabContent">
+        {% for e in emotion %}
+          {% if e == path %}
+            <div class="tab-pane fade show active" id="{{e}}" role="tabpanel" aria-labelledby="{{e}}-tab">
+              <div class='head-content'>
+                <h2>{{e}}</h2>
+              </div>
+              {% include "graph/record_graph.html" with labels=labels data=data color=color emotions=emotions %}
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+<script src="{% static 'js/detail.js' %}" ></script>
